@@ -23,7 +23,7 @@ def analisar_seo(texto):
         "✅ Finalize com um Call to Action (CTA).",
         "✅ Use título único e adicione tags no post."
     ]
-    novo_texto = "🔧 Texto otimizado (simulação)
+    novo_texto = "🔧 Texto otimizado (simulação)\\n\\n" + texto
 
 " + texto
     return "\n".join(sugestoes), novo_texto
