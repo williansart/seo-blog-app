@@ -5,7 +5,7 @@ from collections import Counter
 import re
 
 st.set_page_config(page_title="Otimização SEO Lema - v1.0 (beta)", layout="centered")
-st.title("🔍 Otimizador de Blog com SEO")
+st.title("🔍 Otimização SEO Lema - v1.0 (beta)")
 
 st.markdown("Faça o upload de um arquivo `.docx` com seu post de blog e receba uma análise SEO com sugestões aplicadas.")
 
