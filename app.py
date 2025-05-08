@@ -11,7 +11,6 @@ st.markdown("Faça o upload de um arquivo `.docx` com seu post de blog e receba 
 uploaded_file = st.file_uploader("📤 Envie seu arquivo DOCX", type=["docx"])
 
 def analisar_seo(texto):
-    # Simulação de sugestões (versão básica)
     sugestoes = [
         "✅ Verifique se a palavra-chave aparece no título.",
         "✅ Adicione uma meta description com até 160 caracteres.",
@@ -23,9 +22,10 @@ def analisar_seo(texto):
         "✅ Finalize com um Call to Action (CTA).",
         "✅ Use título único e adicione tags no post."
     ]
-    novo_texto = "🔧 Texto otimizado (simulação)\\n\\n" + texto
+    novo_texto = f"""🔧 Texto otimizado (simulação)
 
-" + texto
+{texto}
+"""
     return "\n".join(sugestoes), novo_texto
 
 if uploaded_file:
