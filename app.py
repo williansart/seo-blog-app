@@ -4,7 +4,7 @@ from io import BytesIO
 from collections import Counter
 import re
 
-st.set_page_config(page_title="Otimização SEO de Blog", layout="centered")
+st.set_page_config(page_title="Otimização SEO Lema - v1.0 (beta)", layout="centered")
 st.title("🔍 Otimizador de Blog com SEO")
 
 st.markdown("Faça o upload de um arquivo `.docx` com seu post de blog e receba uma análise SEO com sugestões aplicadas.")
