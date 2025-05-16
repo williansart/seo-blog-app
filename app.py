@@ -1,6 +1,5 @@
 import streamlit as st
 from docx import Document
-import unicodedata
 import re
 
 st.set_page_config(page_title="Otimização SEO de Blog", layout="centered")
@@ -9,12 +8,6 @@ st.title("🔍 Otimizador de Blog com SEO")
 st.markdown("Faça o upload de um arquivo `.docx` com seu post de blog. O sistema irá analisar o conteúdo e aplicar boas práticas de SEO.")
 
 uploaded_file = st.file_uploader("📤 Envie seu arquivo DOCX", type=["docx"])
-
-def limpar_nome_arquivo(nome):
-    nome = unicodedata.normalize('NFKD', nome).encode('ASCII', 'ignore').decode('ASCII')
-    nome = re.sub(r'[^\w\-_. ]', '', nome)
-    nome = nome.replace(" ", "_")
-    return nome.lower()
 
 def analisar_seo(texto):
     linhas = texto.splitlines()
@@ -64,8 +57,7 @@ def analisar_seo(texto):
     return "\n".join(sugestoes), novo_texto
 
 if uploaded_file:
-    nome_limpo = limpar_nome_arquivo(uploaded_file.name)
-    st.write(f"📁 Arquivo processado: `{nome_limpo}`")
+    st.write("📁 Arquivo recebido com sucesso.")
 
     try:
         doc = Document(uploaded_file)
