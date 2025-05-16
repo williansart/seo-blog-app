@@ -1,27 +1,30 @@
 import streamlit as st
 from docx import Document
-from io import BytesIO
-from collections import Counter
+import unicodedata
 import re
 
-st.set_page_config(page_title="Otimização SEO Lema - v1.0 (beta)", layout="centered")
-st.title("🔍 Otimização SEO Lema - v1.0 (beta)")
+st.set_page_config(page_title="Otimização SEO de Blog", layout="centered")
+st.title("🔍 Otimizador de Blog com SEO")
 
-st.markdown("Faça o upload de um arquivo `.docx` com seu post de blog e receba uma análise SEO com sugestões aplicadas.")
+st.markdown("Faça o upload de um arquivo `.docx` com seu post de blog. O sistema irá analisar o conteúdo e aplicar boas práticas de SEO.")
 
 uploaded_file = st.file_uploader("📤 Envie seu arquivo DOCX", type=["docx"])
+
+def limpar_nome_arquivo(nome):
+    nome = unicodedata.normalize('NFKD', nome).encode('ASCII', 'ignore').decode('ASCII')
+    nome = re.sub(r'[^\w\-_. ]', '', nome)
+    nome = nome.replace(" ", "_")
+    return nome.lower()
 
 def analisar_seo(texto):
     linhas = texto.splitlines()
     titulo = linhas[0] if linhas else "[Título não encontrado]"
-
-    # Meta description sugerida
     corpo = " ".join(linhas[1:]).strip()
     meta_desc = corpo[:157] + "..." if len(corpo) > 160 else corpo
 
-    # Palavras-chave mais frequentes
     palavras = re.findall(r'\b\w+\b', corpo.lower())
     palavras_frequentes = [p for p in palavras if p not in {"de", "da", "em", "o", "a", "e", "para", "com", "do", "que", "os", "as"}]
+    from collections import Counter
     mais_usadas = Counter(palavras_frequentes).most_common(5)
     palavras_chave = ", ".join([f"{p[0]} ({p[1]}x)" for p in mais_usadas])
 
@@ -58,13 +61,19 @@ def analisar_seo(texto):
 🔹 Texto otimizado com estrutura aplicada:
 {texto}
 """
-
     return "\n".join(sugestoes), novo_texto
 
 if uploaded_file:
-    doc = Document(uploaded_file)
-    texto = "\n".join([p.text for p in doc.paragraphs if p.text.strip() != ""])
-    
+    nome_limpo = limpar_nome_arquivo(uploaded_file.name)
+    st.write(f"📁 Arquivo processado: `{nome_limpo}`")
+
+    try:
+        doc = Document(uploaded_file)
+        texto = "\n".join([p.text for p in doc.paragraphs if p.text.strip() != ""])
+    except Exception as e:
+        st.error("⚠️ Erro ao abrir o arquivo. Verifique se está salvo corretamente como .docx e contém texto simples.")
+        st.stop()
+
     st.subheader("✅ Análise SEO")
     checklist, texto_otimizado = analisar_seo(texto)
     st.text(checklist)
@@ -72,8 +81,10 @@ if uploaded_file:
     st.subheader("📝 Texto Otimizado")
     st.text_area("Prévia:", texto_otimizado, height=300)
 
-    # Gerar novo .docx para download
-    output_doc = Document()
+    from docx import Document as DocxDoc
+    from io import BytesIO
+
+    output_doc = DocxDoc()
     output_doc.add_heading("Relatório SEO do Blog", level=1)
     for par in texto_otimizado.split("\n"):
         output_doc.add_paragraph(par)
