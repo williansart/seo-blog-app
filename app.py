@@ -6,6 +6,7 @@ st.set_page_config(page_title="Otimização SEO de Blog", layout="centered")
 st.title("🔍 Otimizador de Blog com SEO")
 
 st.markdown("Faça o upload de um arquivo `.docx` com seu post de blog. O sistema irá analisar o conteúdo e aplicar boas práticas de SEO.")
+st.markdown("**⚠️ Dica:** use arquivos com **nomes simples**, sem acentos, parênteses ou símbolos especiais (ex: ç, ã, #, &).")
 
 uploaded_file = st.file_uploader("📤 Envie seu arquivo DOCX", type=["docx"])
 
